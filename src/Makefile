@@ -12,4 +12,4 @@ default: openmpi_example
 openmpi_example: openmpi_example.o
 
 clean:
-	rm -f openmpi_example.o openmpi_example sge_log/*
+	rm -f openmpi_example.o openmpi_example slurm_log/*

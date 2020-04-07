@@ -5,37 +5,24 @@
 # Generic arguments
 
 # Job name
-#$ -N openmpi_example
-# Stay in the current directory
-#$ -cwd
-# Merge stderr and stdout
-#$ -j y
+#SBATCH --job-name openmpi_example
 # Maximal running time of 10 min
-#$ -l h_rt=00:10:00
-# Allocate 1GB of memory **per slot/process**
-#$ -l h_vmem=1G
-# Write logs to directory "sge_log"
-#$ -o sge_log
-# Use bash as the shell (instead of the default "/bin/sh")
-#$ -S /bin/bash
+#SBATCH --time 00:10:00
+# Allocate 1GB of memory per node
+#SBATCH --mem 1G
+# Write logs to directory "slurm_log"
+#SBATCH -o slurm_log/slurm-%x-%J.log
 
 # MPI-specific parameters
 
-# Use "mpi" project for getting access to the parallel environment
-# for running MPI programs.
-#$ -P mpi
+# Run 64 tasks (threads/on virtual cores)
+#SBATCH --ntasks 64
 
-# Run in the "mpi" parallel environment for MPI-parallel programs
-# that don't use multi-threading within the individual processes.
-#$ -pe mpi 64
+# Make sure to source the profile.d file (not available on head nodes).
+source /etc/profile.d/modules.sh
 
 # Load the OpenMPI environment module to get the runtime environment.
-module load openmpi/3.1.0-0
-
-# Fix TMPDIR to TMP temporary directory assigned by SGE. This is
-# important so local communication does not go through the GPFS
-# file system /fast.
-export TMPDIR=$TMP
+module load openmpi/4.0.3-0
 
 # Launch the program.
 mpirun -np 64 ./openmpi_example

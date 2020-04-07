@@ -2,3 +2,5 @@
 *~
 *.o
 *.a
+openmpi_example
+/slurm_log/
